@@ -105,8 +105,11 @@ void fazTeste(int view){
 		puts ("\n\t Original \n");
 		print(v);
 	}
+	puts("Heap 1");
 	Sort_crescente (v, TAM, &tempo[0][0], 0, &HeapSort);
+	puts("Heap 2");
 	Sort_crescente (v, TAM, &tempo[0][0], 1, &HeapSort);
+	puts("Heap 3");
 	if (view == 2){
 		puts ("\n\t Ordem Crescente \n");
 		print(v);
@@ -116,28 +119,35 @@ void fazTeste(int view){
 		puts ("\n\t Ordem Decrescente \n");
 		print(v);
 	}
+	puts("Heap 4");
 	Sort_decrescente_crescente (v, TAM, &tempo[0][0], &HeapSort);
 	
 	
 		
 	preencher(v);
+	puts("Quick 1");
 	Sort_crescente (v, TAM-1, &tempo[1][0], 0, &QuickSort);
+	puts("Quick 2");
 	Sort_crescente (v, TAM-1, &tempo[1][0], 1, &QuickSort);
 	if (view == 2){
 		puts ("\n\n\n\t\t\tQuickSort");
 		puts ("\n\t Ordem Crescente \n");
 		print(v);
 	}
+	puts("Quick 3");
 	Sort_decrescente (v, TAM-1, &tempo[1][0], &QuickSort);
 	if (view == 2){
 		puts ("\n\t Ordem Decrescente \n");
 		print(v);
 	}
+	puts("Quick 4");
 	Sort_decrescente_crescente (v, TAM-1, &tempo[1][0], &QuickSort);
 		
 	
 	preencher(v);
+	puts("Radix 1");
 	Sort_crescente (v,TAM, &tempo[2][0], 0, &RadixSort);
+	puts("Radix 2");
 	Sort_crescente (v,TAM, &tempo[2][0], 1, &RadixSort);
 	if (view == 2){
 		puts ("\n\n\n\t\t\tRadixSort");
@@ -149,22 +159,27 @@ void fazTeste(int view){
 		puts ("\n\t Ordem Decrescente impossivel para esta ordenacao\n");
 		tempo[2][2]=0;
 	}
+	puts("Radix 4");
 	Sort_decrescente_crescente (v, TAM, &tempo[2][0], &RadixSort);
 	
 	
 	preencher(v);
+	puts("Shell 1");
 	Sort_crescente (v, TAM, &tempo[3][0], 0, &ShellSort);
+	puts("Shell 2");
 	Sort_crescente (v, TAM, &tempo[3][0], 1, &ShellSort);
 	if (view == 2){
 		puts ("\n\n\n\t\t\tShellSort");
 		puts ("\n\t Ordem Crescente \n");
 		print(v);
 	}
+	puts("Shell 3");
 	Sort_decrescente (v, TAM, &tempo[3][0], &ShellSort);
 	if (view == 2){
 		puts ("\n\t Ordem Decrescente \n");
 		print(v);
 	}
+	puts("Shell 4");
 	Sort_decrescente_crescente (v, TAM, &tempo[3][0], &ShellSort);
 
 	tempo_gasto(tempo);
@@ -207,7 +222,6 @@ int leArquivo (char* nomeArq){
 			return 0; //erro
 	}
 	fclose (arq); //fecha arquivo
-	
 	return 1; //numeros carregados no vetor original com sucesso!!
 }
 
@@ -291,6 +305,9 @@ void testeComArquivoView(){ // Mostra no console os numeros usados
 }
 
 ///////////////////// FIM DO TESTE DE ARQUIVO /////////////////////
+
+
+
 
 
 

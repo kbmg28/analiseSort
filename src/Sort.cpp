@@ -21,7 +21,7 @@ void print (unsigned long int *v){		//Funcao exclusiva para mostrar o vetor caso
 		if ( (i+1) % 10 == 0) printf ("\n"); // organiza de 10 em 10
 	}
 	printf ("\n");
-} //fim da fun��o print
+} //fim da funcao print
 
 void preencher (unsigned long int *v){ // funcao preencher
 	for (unsigned long i=0; i<TAM; i++)

@@ -101,7 +101,7 @@ int valida (int var, int typeArray){
 	
 	switch(var){
 		case 1:
-				if(!scanf("%s", nomeArquivo)) msgErro(&res);	 break;
+				if(!scanf("%s", nomeArquivo)) { msgErro(&res);	}	 break;
 		
 		case 2:
 				if(!scanf("%lu", &tamArray)) msgErro(&res);
@@ -156,52 +156,4 @@ int main ()	{
 		system("PAUSE");	system ("cls");
 	} 
 	system("PAUSE");
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
-A
 }
