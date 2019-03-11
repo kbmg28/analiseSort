@@ -17,12 +17,10 @@
 #define QTD_ORDENACOES 4 //Expansivel para analisar mais de uma ordenacao
 
 
-int TAM; //Pode ser tanto o padrao como de um arquivo
-int MEIO; //Metade de TAM
+unsigned long int TAM; //Pode ser tanto o padrao como de um arquivo
+unsigned long int MEIO; //Metade de TAM
 
-int *original; // Vetor default para caso base da analise
-
-//#include "../src/sort.cpp"
+unsigned long int *original; // Vetor default para caso base da analise
 
 #endif
 

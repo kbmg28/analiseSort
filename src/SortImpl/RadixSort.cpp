@@ -4,13 +4,13 @@
 //FALTA TESTAR COM O MODELO PADRAO DAS OUTRAS ORDENACOES !!!!!!!!
 
 
-void RadixSort(int vetor[], int inicio,  int fim, int (*orderby) (int, int)){
-	int i, t=0;		
-	int *b;
-	int maior = vetor[0];	
-	int exp = 1;		
+void RadixSort(unsigned long int vetor[], int inicio,  int fim, int (*orderby) (int, int)){
+	int i;
+	unsigned long int *b;
+	unsigned long int maior = vetor[0];	
+	unsigned long int exp = 1;		
 	
-	b = (int *) calloc(fim, sizeof(int)); 
+	b = (unsigned long int *) calloc(fim, sizeof(unsigned long int)); 
 	
 	for (i = 0; i < fim; i++) { 
 		if (orderby(vetor[i], maior))
@@ -18,7 +18,6 @@ void RadixSort(int vetor[], int inicio,  int fim, int (*orderby) (int, int)){
 	}
 	
 	while (maior/exp > 0) {
-		t++;
 		int bucket[10] = { 0 }; 
 		
 		for (i = 0; i < fim; i++)
