@@ -59,7 +59,7 @@ void verificaQuantidadeDeRepeticoes (unsigned long int v[]){
 	
 	for (i=0; i<tamArray; i++)	if (v[i] == valorIgual)		rep++;
 	
-	printf ("\n\nNo tamanho %d, 90%% e: %d, no vetor existem %d elementos repetidos\n\n ", tamArray, noventaPorCento, rep);
+	printf ("\n\nNo tamanho %lu, 90%% e: %lu, no vetor existem %lu elementos repetidos\n\n ", tamArray, noventaPorCento, rep);
 }
 
 
@@ -83,10 +83,10 @@ void gravaEmArquivo (int opcao){
 		puts ("\t\t\t\tErro de criacao!!");
 		exit (1);
 	}
-	fprintf (arq, "%d\n", tamArray);
+	fprintf (arq, "%lu\n", tamArray);
 	
 	for (unsigned long int i=0; i < tamArray; i++){
-		fprintf (arq, " %d", v[i]);
+		fprintf (arq, " %10lu", v[i]);
 		if (((i+1)%10) == 0)	fprintf (arq, "\n");
 	}
 	printf ("\n\n\t\t\t\tTeste \"%s\" criado com sucesso!!\n\n\n", nomeArquivo);
@@ -101,16 +101,16 @@ int valida (int var, int typeArray){
 	
 	switch(var){
 		case 1:
-				if(!scanf("%s", &nomeArquivo)) msgErro(&res);	 break;
+				if(!scanf("%s", nomeArquivo)) msgErro(&res);	 break;
 		
 		case 2:
-				if(!scanf("%d", &tamArray)) msgErro(&res);
+				if(!scanf("%lu", &tamArray)) msgErro(&res);
 				if(typeArray == NOVENTA_POR_CENTO_IGUAL && tamArray < 10){
 					msgErro(&res);
 					puts ("\t\t---Tamanho minimo: 10!!---");
 				}	 break;
 		case 3:
-				if(!scanf("%d", &limitePossivel)) msgErro(&res);
+				if(!scanf("%lu", &limitePossivel)) msgErro(&res);
 				if (typeArray == SEM_REPETICAO && tamArray > limitePossivel){
 					msgErro(&res);
 					puts ("\t\t---Tamanho do Array deve ser maior que o limite possivel!!---");
@@ -156,4 +156,52 @@ int main ()	{
 		system("PAUSE");	system ("cls");
 	} 
 	system("PAUSE");
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
 }

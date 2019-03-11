@@ -51,7 +51,7 @@ void tempo_gasto (double tempo[][4]){ //inicio da funcao de tempo_gasto
 		* double *tempo: ponteiro para matriz do tempo gasto para ordenar
 		* void (*type_sort): ponteiro para funcao do tipo de ordenacao utilizada
 */
-void Sort_crescente (unsigned long int *v, int N, double *tempo, int pos, void (*type_sort) (unsigned long int *, int, int, int (*ordem) (int, int))){
+void Sort_crescente (unsigned long int *v, int N, double *tempo, int pos, void (*type_sort) (unsigned long int *, int, int, int (*ordem) (unsigned long int, unsigned long int))){
 	clock_t tp1, tp2;
 	
 	tp1 = clock();
@@ -61,7 +61,7 @@ void Sort_crescente (unsigned long int *v, int N, double *tempo, int pos, void (
 	tempo[pos] = (double) (tp2 - tp1) / CLOCKS_PER_SEC;	// Registra o tempo exato de execucao
 }
 
-void Sort_decrescente (unsigned long int *v, int N, double *tempo, void (*type_sort) (unsigned long int *, int, int, int (*ordem) (int, int))){
+void Sort_decrescente (unsigned long int *v, int N, double *tempo, void (*type_sort) (unsigned long int *, int, int, int (*ordem) (unsigned long int, unsigned long int))){
 	clock_t tp1, tp2;
 	
 	preencher (v);	// Volta ao vetor original
@@ -72,7 +72,7 @@ void Sort_decrescente (unsigned long int *v, int N, double *tempo, void (*type_s
 	tempo[2] = (double) (tp2 - tp1) / CLOCKS_PER_SEC;	// Registra o tempo exato de execucao
 }
 
-void Sort_decrescente_crescente (unsigned long int *v, int N, double *tempo, void (*type_sort) (unsigned long int *, int, int, int (*ordem) (int, int))){
+void Sort_decrescente_crescente (unsigned long int *v, int N, double *tempo, void (*type_sort) (unsigned long int *, int, int, int (*ordem) (unsigned long int,unsigned long  int))){
 	clock_t tp1, tp2;
 	preencher (v);	// Volta ao vetor original
 	
@@ -223,7 +223,7 @@ void listaArquivosExistentes (char*caminho){
        return;
 	
 	strcat (cwd, "/");	strcat (cwd, caminho);    dir = opendir(cwd);
-    printf ("\n\nArquivos da pasta \"%s\"", caminho);
+    printf ("\n\nArquivos da pasta \"%s\" \n", caminho);
     
     /* print all the files and directories within directory */
     while ( ( lsdir = readdir(dir) ) != NULL )
@@ -258,6 +258,7 @@ void escolheQualTipoDeTeste(int *op){
 			"\t\t\t 1) Sem repeticao\n"
 			"\t\t\t 2) 90%% dos elementos iguais\n"
 			"\n\t\t (Digite qualquer tecla para Sair)\n");
+	                printf ("\n\n\t\tDigite uma opcao: ");
 	if(!scanf("%d", op)) *op = -1;
 }
 

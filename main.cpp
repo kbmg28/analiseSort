@@ -39,6 +39,6 @@ int main(){
 		system("PAUSE");	system ("cls");
 	} 
 	free(original);
-	printf ("\n\n\t\t\t\t\t HeapSort Encerrado!!\n\n"); 	system ("PAUSE"); 	return 0;
+	printf ("\n\n\t\t\t\t\t Analise de Algoritmos Encerrado!!\n\n"); 	system ("PAUSE"); 	return 0;
 }
 

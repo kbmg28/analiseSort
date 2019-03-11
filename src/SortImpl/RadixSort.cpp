@@ -4,7 +4,7 @@
 //FALTA TESTAR COM O MODELO PADRAO DAS OUTRAS ORDENACOES !!!!!!!!
 
 
-void RadixSort(unsigned long int vetor[], int inicio,  int fim, int (*orderby) (int, int)){
+void RadixSort(unsigned long int vetor[], int inicio,  int fim, int (*orderby) (unsigned long int, unsigned long int)){
 	int i;
 	unsigned long int *b;
 	unsigned long int maior = vetor[0];	
