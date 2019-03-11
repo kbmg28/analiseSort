@@ -3,7 +3,7 @@
 
 //https://gist.github.com/nirocfz/3794605
 
-void ShellSort(unsigned long int vetor[], int inicio, int fim, int (*orderby) (int, int)){
+void ShellSort(int vetor[], int inicio, int fim, int (*orderby) (int, int)){
     int gap, i, j, temp;
 	
 	for (gap = fim / 2; gap > inicio; gap /= 2){

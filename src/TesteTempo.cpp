@@ -5,10 +5,7 @@
 		Apresenta o tempo de cada ordenacao 
 		
 		* A linha representa a ordenacao analisada
-			-> HeapSort
 			-> QuickSort
-			-> RadixSort
-			-> ShellSort
 		
 		* As colunas representam os tempos de cada ordenacao
 			*	Tempo 1: Ordena crescente
@@ -18,9 +15,10 @@
 			*	Tempo 5: Ordena decrescente ate o meio e crescente ate o fim 
 */
 void tempo_gasto (double tempo[][4]){ //inicio da funcao de tempo_gasto
-	
+
+	clock_t cont = 0; // clock_t e definido em time.h, e um apelido (typedef) de long
 	int i, j;
-	const char nome[QTD_ORDENACOES][15] = {"HeapSort", "QuickSort", "RadixSort", "ShellSort"}; /*Se for analisar mais de uma ordenacao, acrescentar o
+	const char nome[QTD_ORDENACOES][15] = {"HeapSort", "Quick SORT", "RadixSort", "ShellSort"}; /*Se for analisar mais de uma ordenacao, acrescentar o
 															nome dela nesta matriz de caracteres e a funcao que 
 															corresponde	no pacote seguindo o padrao especificado */
 	const char nomeTempos[4][60] = { "Ordena crescente",  
@@ -46,12 +44,12 @@ void tempo_gasto (double tempo[][4]){ //inicio da funcao de tempo_gasto
 	com excessao da primeira que para reduzir o tempo de criacao do codigo
 	foi definida com o parametro int pos para referir ao tempo 1 e ao tempo 2
  	
-	* Prototipo: void *nome* (unsigned long int *v, double *tempo, void (*type_sort) (unsigned long int *, int, int, int (*ordem) (int, int)));
-		* unsigned long int v: vetor analisado
+	* Prototipo: void *nome* (int *v, double *tempo, void (*type_sort) (int *, int, int, int (*ordem) (int, int)));
+		* int v: vetor analisado
 		* double *tempo: ponteiro para matriz do tempo gasto para ordenar
 		* void (*type_sort): ponteiro para funcao do tipo de ordenacao utilizada
 */
-void Sort_crescente (unsigned long int *v, int N, double *tempo, int pos, void (*type_sort) (unsigned long int *, int, int, int (*ordem) (int, int))){
+void Sort_crescente (int *v, int N, double *tempo, int pos, void (*type_sort) (int *, int, int, int (*ordem) (int, int))){
 	clock_t tp1, tp2;
 	
 	tp1 = clock();
@@ -61,7 +59,7 @@ void Sort_crescente (unsigned long int *v, int N, double *tempo, int pos, void (
 	tempo[pos] = (double) (tp2 - tp1) / CLOCKS_PER_SEC;	// Registra o tempo exato de execucao
 }
 
-void Sort_decrescente (unsigned long int *v, int N, double *tempo, void (*type_sort) (unsigned long int *, int, int, int (*ordem) (int, int))){
+void Sort_decrescente (int *v, int N, double *tempo, void (*type_sort) (int *, int, int, int (*ordem) (int, int))){
 	clock_t tp1, tp2;
 	
 	preencher (v);	// Volta ao vetor original
@@ -72,7 +70,7 @@ void Sort_decrescente (unsigned long int *v, int N, double *tempo, void (*type_s
 	tempo[2] = (double) (tp2 - tp1) / CLOCKS_PER_SEC;	// Registra o tempo exato de execucao
 }
 
-void Sort_decrescente_crescente (unsigned long int *v, int N, double *tempo, void (*type_sort) (unsigned long int *, int, int, int (*ordem) (int, int))){
+void Sort_decrescente_crescente (int *v, int N, double *tempo, void (*type_sort) (int *, int, int, int (*ordem) (int, int))){
 	clock_t tp1, tp2;
 	preencher (v);	// Volta ao vetor original
 	
@@ -94,10 +92,10 @@ void Sort_decrescente_crescente (unsigned long int *v, int N, double *tempo, voi
 		view : Vizualizar vetor na tela (1: nao, 2: sim)	*/
 void fazTeste(int view){
 	
-	unsigned long int *v = (unsigned long int*) malloc (TAM * sizeof(unsigned long int));
+	int *v = (int*) malloc (TAM * sizeof(int));
 	double tempo[4][4];
   	
-  	printf ("\nCalculando tempo de ordenacao para vetor de %lu posicoes...\n\n", TAM);
+  	printf ("\nCalculando tempo de ordenacao para vetor de %d posicoes...\n\n", TAM);
 
 	preencher(v);
 	if (view == 2){
@@ -140,7 +138,7 @@ void fazTeste(int view){
 	Sort_crescente (v,TAM, &tempo[2][0], 0, &RadixSort);
 	Sort_crescente (v,TAM, &tempo[2][0], 1, &RadixSort);
 	if (view == 2){
-		puts ("\n\n\n\t\t\tRadixSort");
+		puts ("\n\n\n\t\t\tRadix");
 		puts ("\n\t Ordem Crescente \n");
 		print(v);
 	}
@@ -150,7 +148,7 @@ void fazTeste(int view){
 		tempo[2][2]=0;
 	}
 	Sort_decrescente_crescente (v, TAM, &tempo[2][0], &RadixSort);
-	
+		
 	
 	preencher(v);
 	Sort_crescente (v, TAM, &tempo[3][0], 0, &ShellSort);
@@ -171,13 +169,28 @@ void fazTeste(int view){
 	free(v);
 }
 
+/* Gerar numeros para o vetor randomicamente 
+	* Ex: rand() % size
+	* rand(): Definido em stdlib.h
+	* size: Tamanho maximo onde os elementos podem ser gerados
+	
+	* Para que haja trocas de valores a cada chamada de inicio de programa 
+		e necessario usar no main(): srand (time(NULL)); para trocar o valor da semente
+		no qual calcula os numeros
+*/
+void START (void){ // funcao start
+	int i;
+	for (i=0; i<TAM; i++)
+		original[i] = 1 + rand() % 100; // soma com 1 para retirar o 0 da randomizacao
+} // fim da funcao start
+
 /* Se no menu o usuario optar pelo teste padrao, executara
 	com o valor definido por TAM_PADRAO */
 void carregaTamanhoArrayPadrao (){
 	TAM = TAM_PADRAO;
 	MEIO = MEIO_PADRAO;
 	
-	original = (unsigned long int *) malloc(TAM * sizeof(unsigned long int));
+	original = (int *) malloc(TAM * sizeof(int));
 }
 
 void testePadrao (){
@@ -196,14 +209,14 @@ int leArquivo (char* nomeArq){
 	if (!arq)	return 0;
 	
 	//Se retornar eh porque o tamanho nao eh um numero
-	if (!fscanf (arq, "%lu\n", &TAM))
+	if (!fscanf (arq, "%d\n", &TAM))
 		return 0; //erro
 	
 	MEIO = TAM/2; //define meio do vetor
-	original = (unsigned long int *) malloc(TAM * sizeof(unsigned long int)); //aloca posicoes suficientes
+	original = (int *) malloc(TAM * sizeof(int)); //aloca posicoes suficientes
 	
-	for (unsigned long int i=0; i < TAM; i++){ //carrega numero por numero do arquivo
-		if (!fscanf (arq, " %lu", &original[i])) //alguma parte da leitura nao eh um numero
+	for (int i=0; i < TAM; i++){ //carrega numero por numero do arquivo
+		if (!fscanf (arq, " %d", &original[i])) //alguma parte da leitura nao eh um numero
 			return 0; //erro
 	}
 	fclose (arq); //fecha arquivo
@@ -214,17 +227,17 @@ int leArquivo (char* nomeArq){
 /* Fontes:
 			https://stackoverflow.com/questions/298510/how-to-get-the-current-directory-in-a-c-program
 			https://www.hardware.com.br/comunidade/arquivos-varrer/1103524/ */
-void listaArquivosExistentes (char*caminho){
+void listaArquivosExistentes (){
     DIR *dir;
     struct dirent *lsdir;
     char cwd[PATH_MAX];
  
     if (!getcwd(cwd, sizeof(cwd)))
        return;
-	
-	strcat (cwd, "/");	strcat (cwd, caminho);    dir = opendir(cwd);
-    printf ("\n\nArquivos da pasta \"%s\"", caminho);
-    
+
+    strcat (cwd, "/testes");    dir = opendir(cwd);
+    puts ("\n\nArquivos da pasta \"testes\"");
+
     /* print all the files and directories within directory */
     while ( ( lsdir = readdir(dir) ) != NULL )
         printf ("\t\t\t%s\n", lsdir->d_name);
@@ -233,13 +246,16 @@ void listaArquivosExistentes (char*caminho){
 }
 
 /* Se existir o arquivo desejado retorna 1, caso contrario 0 */
-int informaNomeArquivo (char *caminho){
-	char nomeArquivo[20];
+int informaNomeArquivo (){
+	char caminho[40] = "testes/"; //pasta padrao
+	char nomeArquivo[20]; 
+	int tamLido;
+	
 	printf ("\n\n## Informe o nome do arquivo para testar ##\n\t\t"
 			"(Lembre-se que a primeira linha do arquivo deve especificar a quantidade de numeros a serem lidos!!)\n\n");
-	listaArquivosExistentes(caminho);
+	listaArquivosExistentes();
 	printf("\t\t> ");
-	scanf (" %s", nomeArquivo); //le via teclado o nome do arquivo
+	scanf (" %s", &nomeArquivo); //le via teclado o nome do arquivo
 	
 	if ( !strstr(nomeArquivo, ".txt"))//verifica se existe a extensao .txt
 		strcat (nomeArquivo, ".txt");//se nao houver, coloca
@@ -252,44 +268,21 @@ int informaNomeArquivo (char *caminho){
 	return 1; //original carregado com sucesso		
 }
 
-void escolheQualTipoDeTeste(int *op){
-	printf ("\n\n\t\t\t\tTESTES\n");
-	printf ("\n\t\t Escolha: \n"
-			"\t\t\t 1) Sem repeticao\n"
-			"\t\t\t 2) 90%% dos elementos iguais\n"
-			"\n\t\t (Digite qualquer tecla para Sair)\n");
-	if(!scanf("%d", op)) *op = -1;
-}
 
 /* Por padrao a pasta de carregamento fica em .../lib/testes */
-void testeArquivo(int view){ //Apresenta apenas o resultado do teste
-	char caminho[60];
-	int op;
-	escolheQualTipoDeTeste(&op);
-	if (op == 1){
-		strcpy (caminho, "testes/sem-repeticao/");
-		if (informaNomeArquivo(caminho)) //Tenta encontrar o arquivo digitado
-			fazTeste(view);
-	} 
-	else if (op == 2){
-		strcpy(caminho, "testes/noventa-porcento-igual/");
-		if (informaNomeArquivo(caminho)) //Tenta encontrar o arquivo digitado
-			fazTeste(view); 
-	}
-		
-	else
-		puts ("\n\t-----Opcao Invalida!!-----\n");
+void testeComArquivo(){ //Apresenta apenas o resultado do teste
+	if (informaNomeArquivo()) //Tenta encontrar o arquivo digitado
+		fazTeste(1); 
 }
 
-
-void testeComArquivoSemView(){ // Calcula sem mostrar os numeros
-	testeArquivo(1);
-}
 void testeComArquivoView(){ // Mostra no console os numeros usados
-	testeArquivo(2);
+	if (informaNomeArquivo()) //Tenta encontrar o arquivo digitado
+		fazTeste(2); //parametro para avisar que o usuario deseja ver os numeros
 }
 
 ///////////////////// FIM DO TESTE DE ARQUIVO /////////////////////
+
+
 
 
 

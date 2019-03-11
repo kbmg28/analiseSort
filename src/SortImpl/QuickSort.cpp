@@ -1,10 +1,10 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-int particiona (unsigned long int*, int, int, int (*orderby) (int, int));
+int particiona (int*, int, int, int (*orderby) (int, int));
 
 	/* Ordenacao por troca de particoes */
-void QuickSort (unsigned long int vetor[], int inicio, int fim, int (*orderby) (int, int)){
+void QuickSort (int vetor[], int inicio, int fim, int (*orderby) (int, int)){
 	int pivo;	// Base para calculo de troca
 	
 	if (fim > inicio){
@@ -15,7 +15,7 @@ void QuickSort (unsigned long int vetor[], int inicio, int fim, int (*orderby) (
 
 }
 
-int particiona (unsigned long int *vetor, int inicio, int fim, int (*orderby) (int, int)){
+int particiona (int *vetor, int inicio, int fim, int (*orderby) (int, int)){
 	int esq, dir, pivo, aux;
 	
 	esq = inicio;	// Inicializacao para a esquerda

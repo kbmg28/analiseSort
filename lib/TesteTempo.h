@@ -4,22 +4,20 @@
 
 void tempo_gasto (double tempo[][4]);
 
-void Sort_crescente (unsigned long int *v, int N,   double *tempo, int pos, void (*type_sort) (unsigned long int *, int, int, int (*ordem) (int, int)));
-void Sort_decrescente_crescente (unsigned long int *v, int N,  double *tempo, void (*type_sort) (unsigned long int *, int, int, int (*ordem) (int, int)));
-void Sort_crescente_meio_decrescente (unsigned long int *v, int N,  double *tempo, void (*type_sort) (unsigned long int *, int, int, int (*ordem) (int, int)));
-void Sort_decrescente_meio_crescente (unsigned long int *v, int N,  double *tempo, void (*type_sort) (unsigned long int *, int, int, int (*ordem) (int, int)));
+void Sort_crescente (int *v, int N,   double *tempo, int pos, void (*type_sort) (int *, int, int, int (*ordem) (int, int)));
+void Sort_decrescente_crescente (int *v, int N,  double *tempo, void (*type_sort) (int *, int, int, int (*ordem) (int, int)));
+void Sort_crescente_meio_decrescente (int *v, int N,  double *tempo, void (*type_sort) (int *, int, int, int (*ordem) (int, int)));
+void Sort_decrescente_meio_crescente (int *v, int N,  double *tempo, void (*type_sort) (int *, int, int, int (*ordem) (int, int)));
 
 
 void carregaTamanhoArrayPadrao();
 void testePadrao ();
 
-void testeArquivo(int view);
-void testeComArquivoSemView();
+void testeComArquivo();
 void testeComArquivoView();
-
-int informaNomeArquivo (char*caminho);
+int informaNomeArquivo ();
 int leArquivo (char* nomeArq);
-void listaArquivosExistentes (char *caminho);
+void listaArquivosExistentes ();
 
 void fazTeste(int view);
 

@@ -1,10 +1,10 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-void criaHeap (unsigned long int*, int, int, int (*orderby) (int, int));
+void criaHeap (int*, int, int, int (*orderby) (int, int));
 
 //Ordenacao que simula uma arvore binaria completa
-void HeapSort (unsigned long int vet[], int inicio, int fim, int (*orderby) (int, int)){ //inicio da funcao HeapSort
+void HeapSort (int vet[], int inicio, int fim, int (*orderby) (int, int)){ //inicio da funcao HeapSort
 	int i, aux;
 	
 	//Define quem eh filho de quem
@@ -31,7 +31,7 @@ void HeapSort (unsigned long int vet[], int inicio, int fim, int (*orderby) (int
 		Lembrando: 
 					(1) Cada pai possui dois filhos
 					(2) O valor do pai deve ser maior que seus filhos */			
-void criaHeap (unsigned long int vetor[], int inicio, int fim, int (*orderby) (int, int)){ //inicio da funcao criaHeap
+void criaHeap (int vetor[], int inicio, int fim, int (*orderby) (int, int)){ //inicio da funcao criaHeap
 	int aux = vetor[inicio];
 	int j = inicio*2 + 1; //calcula o filho
 	

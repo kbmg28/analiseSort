@@ -9,11 +9,10 @@
 */
 
 int main(){
-	void (*MENU[])() = {  testePadrao, testeComArquivoSemView, testeComArquivoView };
+	void (*MENU[])() = {  testePadrao, testeComArquivo, testeComArquivoView };
 	int x; // indicador de menu
 	int input;
 	
-	system("cls");
 	while(1){
 		x=1;
 		printf ("\n\n\t\t\t\tSort Menu\n");
