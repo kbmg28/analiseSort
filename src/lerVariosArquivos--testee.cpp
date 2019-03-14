@@ -48,9 +48,9 @@ void addTempo (tempoListPtr *lista, tempoListPtr novo){
 
 void printTempo (tempoListPtr lista){	
 	if (!lista)	return;
-	//puts ("\n\t--Lista--\n");
+	printf ("\n\t%-15s  |  %-10s\n", "Quantidade lida", "Tempo usado");
 	while (lista){
-		printf ("\n\t Para %li elementos, gastou --> %G s", lista->qtdElementos, lista->tempoUsado);
+		printf ("\n\t %15li --> %8G s", lista->qtdElementos, lista->tempoUsado);
 		lista = lista->prox;
 	}
 	printf ("\n\n");
@@ -74,7 +74,6 @@ void libera_listaTempo (tempoListPtr *lista){
 analiseListPtr cria_no_Analise (const char* nomeOrdenacao){
 	analiseListPtr novo = (analiseListPtr) malloc(sizeof(no_analise));
 	strcpy(novo->nomeOrdenacao, nomeOrdenacao);
-//    addTempo(&(novo->listTemposTestes), novoTempo);
     novo->listTemposTestes = NULL;
 	novo->prox = NULL;
 	return novo;
@@ -83,8 +82,6 @@ analiseListPtr cria_no_Analise (const char* nomeOrdenacao){
 void addAnalise (analiseListPtr *lista, analiseListPtr novo){
 	analiseListPtr atual;
 	
-//	system ("cls");
-	//puts ("\n\t\t--Inserir na lista analise--\n");
 	if (!*lista)	*lista = novo;
 	else{
 		atual = *lista;
@@ -93,29 +90,26 @@ void addAnalise (analiseListPtr *lista, analiseListPtr novo){
 			atual = atual->prox;
 		atual->prox = novo;
 	}
-	//printf ("\n\tElemento inserido no fim com sucesso!!\n\n");
 }
 
 void addTempoOnAnalise (analiseListPtr *lista, const char* ordenacao, tempoListPtr novo){
 	analiseListPtr atual;
 	
-//	system ("cls");
-	//puts ("\n\t\t--Inserir na lista analise--\n");
 	if (!*lista)	return;
 	else{
 		atual = *lista;
 		
-		while (atual->prox || !strcmp(atual->nomeOrdenacao, ordenacao))
+		while (atual->prox && strcmp(atual->nomeOrdenacao, ordenacao))
 			atual = atual->prox;
+
 		if (!strcmp(atual->nomeOrdenacao, ordenacao))
-            addTempo(&atual->listTemposTestes, novo);
+			addTempo(&atual->listTemposTestes, novo);
 	}
-	//printf ("\n\tElemento inserido no fim com sucesso!!\n\n");
 }
 
 void print_lista (analiseListPtr lista){	
 	if (!lista)	return;
-	puts ("\n\t--Lista--\n");
+	puts ("\n\t---------------Lista---------------\n");
 	while (lista){
 		printf ("-> %s \n", lista->nomeOrdenacao);
         if (lista->listTemposTestes)
@@ -130,6 +124,7 @@ void libera_lista (analiseListPtr *lista){
 	
 	while(*lista){
 		atual = *lista;
+		libera_listaTempo(&(atual->listTemposTestes));
 		*lista = (*lista)->prox;
 		free (atual);
 	}
@@ -171,25 +166,27 @@ void fazTeste2(analiseListPtr* listAnalise){
   	printf ("\nCalculando tempo de ordenacao para vetor de %lu posicoes...\n\n", TAM);
 
 	preencher(v);                        
-	puts("Heap ");
+	printf("\t\tHeap ");
 	Sort_crescente (v, TAM, &tempo[0][0], 0, &HeapSort);    addTempoOnAnalise(listAnalise, "HeapSort", cria_no_listaTempo(TAM, tempo[0][0], 1));
-	
+	puts ("\tok");
     
-	preencher(v);
-	puts("Quick ");
-	Sort_crescente (v, TAM-1, &tempo[1][0], 0, &QuickSort); addTempoOnAnalise(listAnalise, "QuickSort", cria_no_listaTempo(TAM, tempo[1][0], 1));
-	
+	if (TAM<=25000){
+		preencher(v);
+		printf("\t\tQuick ");
+		Sort_crescente (v, TAM-1, &tempo[1][0], 0, &QuickSort); addTempoOnAnalise(listAnalise, "QuickSort", cria_no_listaTempo(TAM, tempo[1][0], 1));
+		puts ("\tok");
+	}
     preencher(v);
-	puts("Radix ");
+	printf("\t\tRadix ");
 	Sort_crescente (v,TAM, &tempo[2][0], 0, &RadixSort);     addTempoOnAnalise(listAnalise, "RadixSort", cria_no_listaTempo(TAM, tempo[2][0], 1));
-/*
+	puts ("\tok");
+	
 	preencher(v);
-	puts("Shell ");
+	printf
+	("\t\tShell ");
 	Sort_crescente (v, TAM, &tempo[3][0], 0, &ShellSort);   addTempoOnAnalise(listAnalise, "ShellSort", cria_no_listaTempo(TAM, tempo[3][0], 1));
-*/	
-    puts ("opa");
+	puts ("\tok");
 
-//	tempo_gasto(tempo);
 	free(v);
 }
 
@@ -255,7 +252,6 @@ int main (){
 
     print_lista(listAnalise);
     puts ("ok");
-
     
     libera_lista(&listAnalise);
     
