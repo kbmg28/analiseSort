@@ -29,22 +29,6 @@ tempoListPtr cria_no_listaTempo (long qtdElementos, double tempoUsado, int statu
 	return novo;
 }
 
-void addTempo (tempoListPtr *lista, tempoListPtr novo){
-	tempoListPtr atual;
-	
-//	system ("cls");
-//	puts ("\n\t\t--Inserir na lista--\n");
-	if (!*lista)	*lista = novo;
-	else{
-		atual = *lista;
-		
-		while (atual->prox)
-			atual = atual->prox;
-		atual->prox = novo;
-	}
-//	printf ("\n\tElemento inserido no fim com sucesso!!\n\n");
-}
-
 
 void printTempo (tempoListPtr lista){	
 	if (!lista)	return;
@@ -54,6 +38,50 @@ void printTempo (tempoListPtr lista){
 		lista = lista->prox;
 	}
 	printf ("\n\n");
+}
+
+//https://forum.scriptbrasil.com.br/topic/173946-ordenar-elementos-crescentemente-em-lista-encadeada/
+void addTempo (tempoListPtr *lista, tempoListPtr novo){
+	tempoListPtr atual, anterior;
+
+	if (!*lista)	*lista = novo;
+	else{
+		atual = *lista;
+		anterior = NULL;
+
+		while (atual->prox != NULL && (atual->qtdElementos < novo->qtdElementos)){
+			anterior = atual;
+			atual = atual->prox;
+		}
+
+		if (anterior == NULL){
+			if (novo->qtdElementos < atual->qtdElementos){
+				novo->prox = atual;
+				*lista = novo;
+			}
+			else
+				atual->prox = novo;
+		}
+		
+		else if (atual->prox == NULL){
+			if (novo->qtdElementos < atual->qtdElementos){
+				novo->prox = atual;
+				anterior->prox = novo;
+			}
+			 else
+			 	atual->prox = novo;
+		}
+		else{
+			if (novo->qtdElementos < atual->qtdElementos){
+				anterior->prox = novo;
+				novo->prox = atual;
+			}
+			else{
+				novo->prox = atual->prox;
+				atual->prox = novo;
+			}
+		}
+	}
 }
 
 void libera_listaTempo (tempoListPtr *lista){
@@ -103,15 +131,17 @@ void addTempoOnAnalise (analiseListPtr *lista, const char* ordenacao, tempoListP
 			atual = atual->prox;
 
 		if (!strcmp(atual->nomeOrdenacao, ordenacao))
-			addTempo(&atual->listTemposTestes, novo);
+			addTempo(&(atual->listTemposTestes), novo);
 	}
 }
+
 
 void print_lista (analiseListPtr lista){	
 	if (!lista)	return;
 	puts ("\n\t---------------Lista---------------\n");
 	while (lista){
 		printf ("-> %s \n", lista->nomeOrdenacao);
+
         if (lista->listTemposTestes)
             printTempo(lista->listTemposTestes);
 		lista = lista->prox;
