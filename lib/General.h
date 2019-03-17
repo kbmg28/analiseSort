@@ -22,6 +22,24 @@ unsigned long int MEIO; //Metade de TAM
 
 unsigned long int *original; // Vetor default para caso base da analise
 
+typedef struct marcacaoTempo{
+    long qtdElementos;
+    double tempoUsado;
+    int status;
+    struct marcacaoTempo *prox;
+} no_tempo;
+
+typedef no_tempo* tempoListPtr;
+
+typedef struct analiseOrdenacao{
+    char nomeOrdenacao[30];
+    tempoListPtr listTemposTestes;
+    struct analiseOrdenacao *prox;
+} no_analise;
+
+typedef no_analise* analiseListPtr;
+
+
 #endif
 
 

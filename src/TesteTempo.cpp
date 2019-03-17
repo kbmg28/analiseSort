@@ -30,11 +30,13 @@ void tempo_gasto (double tempo[][4]){ //inicio da funcao de tempo_gasto
 	for (i=0; i<QTD_ORDENACOES; i++){ 
 		printf ("\n\n\n\n\t\t%s\n", nome[i]);	//Nome de cada ordenacao
 		for (j=0; j<4; j++){ //Os 4 tempos descritos acima
-			if (i==2 && j ==2){
-				puts ("\n\t----- Ordem Decrescente impossivel para esta ordenacao-----\n");
+			printf ("\n Tempo %d -->   %-55s--> ", j+1, nomeTempos[j]);
+			if (tempo[i][j] == -1.0){
+				puts ("Stack Overflow");
 				continue;	
 			}
-			printf ("\n Tempo %d -->   %-55s--> %G s", j+1, nomeTempos[j], tempo[i][j]); // %G e um especificador de formato que escolhe notacao cientifica ou ponto flutuante
+			else printf ("%.3f s", tempo[i][j]); 
+			
 			if (!tempo[i][j]) printf ("\t Tempo menor que um microsegundo"); // Se o tempo for exatamente igual a 0
 			printf ("\n");
 		}
@@ -105,11 +107,8 @@ void fazTeste(int view){
 		puts ("\n\t Original \n");
 		print(v);
 	}
-	puts("Heap 1");
 	Sort_crescente (v, TAM, &tempo[0][0], 0, &HeapSort);
-	puts("Heap 2");
 	Sort_crescente (v, TAM, &tempo[0][0], 1, &HeapSort);
-	puts("Heap 3");
 	if (view == 2){
 		puts ("\n\t Ordem Crescente \n");
 		print(v);
@@ -119,35 +118,32 @@ void fazTeste(int view){
 		puts ("\n\t Ordem Decrescente \n");
 		print(v);
 	}
-	puts("Heap 4");
+//	puts("Heap 4");
 	Sort_decrescente_crescente (v, TAM, &tempo[0][0], &HeapSort);
 	
 	
 		
-	preencher(v);
-	puts("Quick 1");
-	Sort_crescente (v, TAM-1, &tempo[1][0], 0, &QuickSort);
-	puts("Quick 2");
-	Sort_crescente (v, TAM-1, &tempo[1][0], 1, &QuickSort);
-	if (view == 2){
-		puts ("\n\n\n\t\t\tQuickSort");
-		puts ("\n\t Ordem Crescente \n");
-		print(v);
-	}
-	puts("Quick 3");
-	Sort_decrescente (v, TAM-1, &tempo[1][0], &QuickSort);
-	if (view == 2){
-		puts ("\n\t Ordem Decrescente \n");
-		print(v);
-	}
-	puts("Quick 4");
-	Sort_decrescente_crescente (v, TAM-1, &tempo[1][0], &QuickSort);
+	if (TAM <= 25000){
+		preencher(v);
+		Sort_crescente (v, TAM-1, &tempo[1][0], 0, &QuickSort);
+		Sort_crescente (v, TAM-1, &tempo[1][0], 1, &QuickSort);
+		if (view == 2){
+			puts ("\n\n\n\t\t\tQuickSort");
+			puts ("\n\t Ordem Crescente \n");
+			print(v);
+		}
+		Sort_decrescente (v, TAM-1, &tempo[1][0], &QuickSort);
+		if (view == 2){
+			puts ("\n\t Ordem Decrescente \n");
+			print(v);
+		}
+		Sort_decrescente_crescente (v, TAM-1, &tempo[1][0], &QuickSort);
 		
+	}
+	else	tempo[1][0] = tempo[1][1] = tempo[1][2] = tempo[1][3] = -1.0;
 	
 	preencher(v);
-	puts("Radix 1");
 	Sort_crescente (v,TAM, &tempo[2][0], 0, &RadixSort);
-	puts("Radix 2");
 	Sort_crescente (v,TAM, &tempo[2][0], 1, &RadixSort);
 	if (view == 2){
 		puts ("\n\n\n\t\t\tRadixSort");
@@ -155,31 +151,24 @@ void fazTeste(int view){
 		print(v);
 	}
 	//Sort_decrescente (v, TAM, &tempo[2][0], &RadixSort);
-	if (view == 2){
-		puts ("\n\t Ordem Decrescente impossivel para esta ordenacao\n");
-		tempo[2][2]=0;
-	}
-	puts("Radix 4");
+	tempo[2][2]=-1;
+	
 	Sort_decrescente_crescente (v, TAM, &tempo[2][0], &RadixSort);
 	
 	
 	preencher(v);
-	puts("Shell 1");
 	Sort_crescente (v, TAM, &tempo[3][0], 0, &ShellSort);
-	puts("Shell 2");
 	Sort_crescente (v, TAM, &tempo[3][0], 1, &ShellSort);
 	if (view == 2){
 		puts ("\n\n\n\t\t\tShellSort");
 		puts ("\n\t Ordem Crescente \n");
 		print(v);
 	}
-	puts("Shell 3");
 	Sort_decrescente (v, TAM, &tempo[3][0], &ShellSort);
 	if (view == 2){
 		puts ("\n\t Ordem Decrescente \n");
 		print(v);
 	}
-	puts("Shell 4");
 	Sort_decrescente_crescente (v, TAM, &tempo[3][0], &ShellSort);
 
 	tempo_gasto(tempo);
@@ -200,6 +189,7 @@ void testePadrao (){
 	carregaTamanhoArrayPadrao(); // aloca o original por default
 	START();	//define valores do original
 	fazTeste(1); //executa o teste sem vizualizacao
+	free(original);
 }
 ///////////////////// FIM DO TESTE PADRAO /////////////////////
 
@@ -294,6 +284,9 @@ void testeArquivo(int view){ //Apresenta apenas o resultado do teste
 		
 	else
 		puts ("\n\t-----Opcao Invalida!!-----\n");
+		
+	free(original);
+	original = NULL;
 }
 
 
@@ -308,6 +301,233 @@ void testeComArquivoView(){ // Mostra no console os numeros usados
 
 
 
+///////////////////// TESTE DE TODOS OS ARQUIVOS /////////////////////
+
+tempoListPtr cria_no_listaTempo (long qtdElementos, double tempoUsado, int status){
+	tempoListPtr novo = (tempoListPtr) malloc(sizeof(no_tempo));
+	novo->qtdElementos = qtdElementos;
+    novo->tempoUsado = tempoUsado;
+    novo->status = status;
+	novo->prox = NULL;
+	return novo;
+}
+
+
+void printTempo (tempoListPtr lista, FILE *arq){	
+	if (!lista)	return;
+	printf ("\n\t%-15s  |  %-10s\n", "Quantidade lida", "Tempo usado");
+	while (lista){
+		printf ("\n\t %15li --> %.3f s", lista->qtdElementos, lista->tempoUsado);
+		fprintf (arq, "%15li;%.3f\n", lista->qtdElementos, lista->tempoUsado);
+		lista = lista->prox;
+	}
+	printf ("\n\n");
+}
+
+void addTempo (tempoListPtr *lista, tempoListPtr novo){
+	tempoListPtr atual, anterior;
+
+	if (!*lista)	*lista = novo;
+	else{
+		atual = *lista;
+		anterior = NULL;
+
+		while (atual->prox != NULL && (atual->qtdElementos < novo->qtdElementos)){
+			anterior = atual;
+			atual = atual->prox;
+		}
+
+		if (anterior == NULL){
+			if (novo->qtdElementos < atual->qtdElementos){
+				novo->prox = atual;
+				*lista = novo;
+			}
+			else
+				atual->prox = novo;
+		}
+		else if (atual->prox == NULL){
+			if (novo->qtdElementos < atual->qtdElementos){
+				novo->prox = atual;
+				anterior->prox = novo;
+			}
+			 else
+			 	atual->prox = novo;
+		}
+		else{
+			if (novo->qtdElementos < atual->qtdElementos){
+				anterior->prox = novo;
+				novo->prox = atual;
+			}
+			else{
+				novo->prox = atual->prox;
+				atual->prox = novo;
+			}
+		}
+	}
+}
+
+void libera_listaTempo (tempoListPtr *lista){
+	tempoListPtr atual;
+	
+	while(*lista){
+		atual = *lista;
+		*lista = (*lista)->prox;
+		free (atual);
+	}
+	free (*lista);
+	
+	*lista = NULL;
+}
 
 
 
+analiseListPtr cria_no_Analise (const char* nomeOrdenacao){
+	analiseListPtr novo = (analiseListPtr) malloc(sizeof(no_analise));
+	strcpy(novo->nomeOrdenacao, nomeOrdenacao);
+    novo->listTemposTestes = NULL;
+	novo->prox = NULL;
+	return novo;
+}
+
+void addAnalise (analiseListPtr *lista, analiseListPtr novo){
+	analiseListPtr atual;
+	
+	if (!*lista)	*lista = novo;
+	else{
+		atual = *lista;
+		
+		while (atual->prox)
+			atual = atual->prox;
+		atual->prox = novo;
+	}
+}
+
+void addTempoOnAnalise (analiseListPtr *lista, const char* ordenacao, tempoListPtr novo){
+	analiseListPtr atual;
+	
+	if (!*lista)	return;
+	else{
+		atual = *lista;
+		
+		while (atual->prox && strcmp(atual->nomeOrdenacao, ordenacao))
+			atual = atual->prox;
+
+		if (!strcmp(atual->nomeOrdenacao, ordenacao))
+			addTempo(&(atual->listTemposTestes), novo);
+	}
+}
+
+
+void print_lista (analiseListPtr lista, const char* tipoDoTeste){	
+	char caminho[30] = "testes/";
+	FILE *arq;
+	
+	strcat(caminho, tipoDoTeste); strcat(caminho, ".txt");
+	arq = fopen(caminho, "w");
+	
+	if (!lista || !arq)	return;
+	
+	puts ("\n\t---------------Lista---------------\n");
+	while (lista){
+		printf ("-> %s \n", lista->nomeOrdenacao);
+		fprintf (arq, "\n\n%15s;Tempo\n", lista->nomeOrdenacao);
+		
+        if (lista->listTemposTestes)
+            printTempo(lista->listTemposTestes, arq);
+		lista = lista->prox;
+	}
+	printf ("\n\n");
+	fclose(arq);
+}
+
+void libera_lista (analiseListPtr *lista){
+	analiseListPtr atual;
+	
+	while(*lista){
+		atual = *lista;
+		libera_listaTempo(&(atual->listTemposTestes));
+		*lista = (*lista)->prox;
+		free (atual);
+	}
+	free (*lista);
+	
+	*lista = NULL;
+}
+
+void fazTesteComLista(analiseListPtr* listAnalise){
+	
+	unsigned long int *v = (unsigned long int*) malloc (TAM * sizeof(unsigned long int));
+	double tempo[4][4];
+  	
+  	//printf ("\nCalculando tempo de ordenacao para vetor de %lu posicoes...\n\n", TAM);
+
+	preencher(v);                        
+	//printf("\t\tHeap ");
+	Sort_crescente (v, TAM, &tempo[0][0], 0, &HeapSort);    addTempoOnAnalise(listAnalise, "HeapSort", cria_no_listaTempo(TAM, tempo[0][0], 1));
+	//puts ("\tok");
+    
+	if (TAM<=25000){
+		preencher(v);
+	//	printf("\t\tQuick ");
+		Sort_crescente (v, TAM-1, &tempo[1][0], 0, &QuickSort); addTempoOnAnalise(listAnalise, "QuickSort", cria_no_listaTempo(TAM, tempo[1][0], 1));
+	//	puts ("\tok");
+	}
+    preencher(v);
+	//printf("\t\tRadix ");
+	Sort_crescente (v,TAM, &tempo[2][0], 0, &RadixSort);     addTempoOnAnalise(listAnalise, "RadixSort", cria_no_listaTempo(TAM, tempo[2][0], 1));
+	//puts ("\tok");
+	
+	preencher(v);
+	//printf("\t\tShell ");
+	Sort_crescente (v, TAM, &tempo[3][0], 0, &ShellSort);   addTempoOnAnalise(listAnalise, "ShellSort", cria_no_listaTempo(TAM, tempo[3][0], 1));
+	//puts ("\tok");
+
+	free(v);
+}
+
+void testaTodosOsArquivos (const char*caminho, const char* tipoDoTeste){
+    DIR *dir;
+    struct dirent *lsdir;       
+    char cwd[PATH_MAX];
+    char arqLido[100];
+    analiseListPtr list = NULL;
+    analiseListPtr* listAnalise = &list;
+    
+	if (!getcwd(cwd, sizeof(cwd)))
+       return;      
+	
+	strcat (cwd, "/");	strcat (cwd, caminho);    dir = opendir(cwd);
+    //printf ("\n\nArquivos da pasta \"%s\" \n", caminho);
+    printf ("\n\n\t\tCalculando os tempos para %s...\n", tipoDoTeste);
+    addAnalise(listAnalise, cria_no_Analise("HeapSort"));
+    addAnalise(listAnalise, cria_no_Analise("QuickSort"));
+    addAnalise(listAnalise, cria_no_Analise("RadixSort"));
+    addAnalise(listAnalise, cria_no_Analise("ShellSort"));
+    
+    /* reading all the files and directories within directory */
+    while ( ( lsdir = readdir(dir) ) != NULL ){
+        //printf ("\t\t\t%s\n", lsdir->d_name);
+        
+        strcpy (arqLido, cwd);  strcat (arqLido, "/");  strcat(arqLido, lsdir->d_name);
+        if (strstr(arqLido, ".txt")){
+            if (leArquivo(arqLido)){
+                //printf ("\n\tCarregou o arquivo \"%s\" com o tamanho: %lu\n", lsdir->d_name, TAM);
+                fazTesteComLista(listAnalise);
+                free(original);
+                original = NULL;
+            }
+        }
+    }
+    
+    print_lista(list, tipoDoTeste);
+  //  puts ("ok");
+    libera_lista(listAnalise);
+}
+
+void testeComTodasAsOrdenacoes(){
+	
+    testaTodosOsArquivos("testes/noventa-porcento-igual", "noventa-por-cento-igual");
+    testaTodosOsArquivos("testes/sem-repeticao", "sem-repeticao");
+	
+	puts ("\n\t\t Os tempos foram salvos na pasta de teste!!\n");
+}

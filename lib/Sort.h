@@ -29,6 +29,3 @@ void ShellSort(unsigned long int vetor[], int inicio, int fim, int (*orderby) (u
 #include "../src/SortImpl/ShellSort.cpp"
 
 #endif
-
-
-

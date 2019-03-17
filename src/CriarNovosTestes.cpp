@@ -16,15 +16,18 @@ enum tipo { SEM_REPETICAO, NOVENTA_POR_CENTO_IGUAL } tipoDeArray;
 	Tipos de retornos
 		'1': elemento existe, nao insere
 		'0': elemento pode ser inserido		*/
-unsigned long int verificaSeExiste(unsigned long int v[], unsigned long int pos, unsigned long int valor){
+unsigned long int verificaSeExiste(unsigned long int v[], unsigned long int pos, unsigned long int valorParaSerInserido){
     unsigned long int i;
-    for (i=0; i<pos;i++)	if(v[i] == valor)	return 1;
+    
+    for (i=0; i<pos;i++)
+    	if(v[i] == valorParaSerInserido)	return 1;
+    	
     return 0;
 }
 
 /* Gera aleatoriamente um vetor sem elementos repetidos
 	com um tamanho maximo de 30 000 numeros */
-void criaVetorSemRepeticao(unsigned long int v[]){
+void criaVetorSemRepeticao(unsigned long int v[], unsigned long int tamArray){
     unsigned long int i;
     for ( i=0 ; i < tamArray; ){
         v[i] = 1+ rand()%limitePossivel;
@@ -36,20 +39,24 @@ void criaVetorSemRepeticao(unsigned long int v[]){
 ///////////////////////////// Vetor 90% igual /////////////////////////////
 
 void criaVetorNoventaPorcentoIgual (unsigned long int v[]){
-    unsigned long int i;
+    unsigned long int i, j=0;
     unsigned long int valor = 1 + rand()%limitePossivel;
     unsigned long int tamDistribuicao = tamArray * 0.1;
+    unsigned long int *vetorSemRepeticao = (unsigned long int*) malloc(tamDistribuicao * sizeof(unsigned long int));
     unsigned long int intervaloDeInsercaoAleatoria = tamArray/tamDistribuicao;
 	unsigned long int posAleatoria;
 	
+	criaVetorSemRepeticao(vetorSemRepeticao, tamDistribuicao);
+	
     for ( i=0, posAleatoria=0 ; i < tamArray; i++){
     	if (i==posAleatoria){
-    		v[i] = 1 + rand() % limitePossivel;
-			posAleatoria+= intervaloDeInsercaoAleatoria; 
+    		v[i] = vetorSemRepeticao[j];	j++;
+			posAleatoria+= intervaloDeInsercaoAleatoria;  
 		}
 		else
 			v[i] = valor;
 	}
+	free(vetorSemRepeticao);
 }
 
 
@@ -59,7 +66,7 @@ void verificaQuantidadeDeRepeticoes (unsigned long int v[]){
 	
 	for (i=0; i<tamArray; i++)	if (v[i] == valorIgual)		rep++;
 	
-	printf ("\n\nNo tamanho %lu, 90%% e: %lu, no vetor existem %lu elementos repetidos\n\n ", tamArray, noventaPorCento, rep);
+	printf ("\n\nNo tamanho %lu, 90\% e: %lu, no vetor existem %lu elementos repetidos\n\n ", tamArray, noventaPorCento, rep);
 }
 
 
@@ -75,7 +82,7 @@ void gravaEmArquivo (int opcao){
 	
 	strcat (caminho, nomeArquivo);
 	
-	(opcao == SEM_REPETICAO)?	criaVetorSemRepeticao(v) : criaVetorNoventaPorcentoIgual(v);
+	(opcao == SEM_REPETICAO)?	criaVetorSemRepeticao(v, tamArray) : criaVetorNoventaPorcentoIgual(v);
 	
 	FILE *arq = fopen (caminho, "w");
 	
@@ -114,7 +121,12 @@ int valida (int var, int typeArray){
 				if (typeArray == SEM_REPETICAO && tamArray > limitePossivel){
 					msgErro(&res);
 					puts ("\t\t---Tamanho do Array deve ser maior que o limite possivel!!---");
-				}	 break;
+				}	 
+				if (typeArray == NOVENTA_POR_CENTO_IGUAL && (limitePossivel - 1) < (tamArray*0.10)){
+					msgErro(&res);
+					puts ("\t\t---Limite possivel deve ser maior que 10\% do tamanho do array!!---");
+				}	 
+				break;
 	}
 	return res;
 }
@@ -126,6 +138,7 @@ int main ()	{
 	
 	while(1){
 		x=1;
+		input=2;
 		printf ("\n\n\t\t\t\tCriacao de Testes\n");
 		printf ("\n\t\t Escolha: \n"
 			"\t\t\t 1) Sem repeticao\n"
